@@ -1,6 +1,5 @@
 // import {SearchBar} from "components/searchBar.jsx";
 
-
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -52,9 +51,10 @@ class MenuItem extends React.Component {
 
     // Get the image of the item
     if (this.details.item.images.length !== 0) {
-      this.img_src = this.details.item.images[0]["400"]
+      this.img_src = this.details.item.images[0]["200"]
     } else {
-      this.img_src = "https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg";
+      // this.img_src = "https://omegamma.com.au/wp-content/uploads/2017/04/default-image.jpg";
+      this.img_src = ""
     }
 
     // Arrange ingredients part
@@ -92,7 +92,7 @@ class FavoriteButton extends React.Component {
     super(props);
     this.state = {image_src: "./images/heart.png",
                   clicked: false,
-                  text: <div>Favorilere ekle</div>};
+                  text: "Favorilere ekle"};
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -100,7 +100,7 @@ class FavoriteButton extends React.Component {
     if(this.state.clicked){
       this.setState({image_src: "./images/heart.png",
                      clicked: false,
-                     text: <div>Favorilere ekle</div>});
+                     text: "Favorilere ekle"});
     }else{
       this.setState({image_src: "./images/heart_filled.png",
                      clicked: true,
@@ -172,8 +172,6 @@ class MenuLayout extends React.Component {
   }
 }
 
-
-
 class Restaurant extends React.Component {
   render() {
     const restaurant = window.data.restaurant;
@@ -195,7 +193,6 @@ class Restaurant extends React.Component {
     </div>
   }
 }
-
 
 $(function () {
   ReactDOM.render(

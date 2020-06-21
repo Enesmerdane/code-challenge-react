@@ -9,9 +9,7 @@ class SearchBar extends React.Component {
     return (
       <div>
         Arama Yap
-        <input>
-
-        </input>
+        <input/>
       </div>
     );
   }
@@ -173,6 +171,18 @@ class MenuLayout extends React.Component {
 }
 
 class Restaurant extends React.Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {searchWord: ""};
+
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleSearch(){
+    
+  }
+
   render() {
     const restaurant = window.data.restaurant;
     return <div>

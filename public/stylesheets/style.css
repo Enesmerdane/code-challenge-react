@@ -6,3 +6,48 @@ body {
 a {
   color: #00B7FF;
 }
+
+/**
+****************    Favorite Button    ****************
+**/
+.favorite_label {
+  /* Presentation */
+  font-size: 48px
+}
+
+/* Required Styling */
+
+label input[type="checkbox"] {
+  display: none;
+}
+
+.custom_checkbox {
+  margin-left: 2em;
+  position: relative;
+  cursor: pointer;
+}
+
+.custom_checkbox .glyphicon {
+  color: red;
+  position: absolute;
+  top: 0.4em;
+  left: -1.25em;
+  font-size: 0.75em;
+}
+
+.custom_checkbox .glyphicon-heart-empty {
+  color: red;
+}
+
+.custom_checkbox .glyphicon-heart {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.custom_checkbox:hover .glyphicon-heart{
+  opacity: 0.5;
+}
+
+.custom_checkbox input[type="checkbox"]:checked ~ .glyphicon-heart {
+  opacity: 1;
+}

@@ -28,32 +28,45 @@ class SectionView extends React.Component {
 
     this.section_name = props.section_name;
     //console.log("SectionView: section_name" + this.section_name);
-
   }
 
   render() {
+
     this.item_list = this.props.item_list;
     //console.log("Item list: " + JSON.stringify(this.item_list));
-
     if (this.item_list.length == 0) {
       const menu_items_view = <b>No Results Found.</b>
       return (
         <div>
           <h3>{this.section_name}</h3>
-          <hr></hr>
+          <hr
+            style={{
+              color: "black",
+              backgroundColor: "black",
+              height: 2
+            }}
+          />
           {menu_items_view}
         </div>
       );
     } else {
       const menu_items_view = this.item_list.map((item) =>
-        <MenuItem menu_item_details={item} 
+        <MenuItem menu_item_details={item}
           key={item.id}
+          handleFav={this.props.handleFav}
+          handleUnfav={this.props.handleUnfav}
         />
       )
       return (
         <div>
           <h3>{this.section_name}</h3>
-          <hr></hr>
+          <hr
+            style={{
+              color: "black",
+              backgroundColor: "black",
+              height: 2
+            }}
+          />
           {menu_items_view}
         </div>
       );
@@ -95,12 +108,21 @@ class MenuItem extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{borderRadius: 25, 
+                   backgroundColor: "rgba(255, 0, 0, 0.06)",
+                   marginTop: 15,
+                   marginBottom: 15,
+                   paddingTop: 20,
+                   paddingLeft: 15,
+                   paddingBottom: 10}}>
         <img src={this.img_src} />
         <div>{this.details.item.name}</div>
         <div>{this.ingredients_arranged}</div>
         <div>{this.price_arranged}</div>
-        <FavoriteButton />
+        <FavoriteButton item_id={this.details.id}
+          handleFav={this.props.handleFav}
+          handleUnfav={this.props.handleUnfav}
+        />
       </div>
     );
   }
@@ -114,6 +136,9 @@ class FavoriteButton extends React.Component {
       clicked: false,
       text: "Favorilere ekle"
     };
+
+    this.item_id = this.props.item_id;
+
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -124,12 +149,14 @@ class FavoriteButton extends React.Component {
         clicked: false,
         text: "Favorilere ekle"
       });
+      this.props.handleUnfav(this.item_id);
     } else {
       this.setState({
         image_src: "./images/heart_filled.png",
         clicked: true,
         text: <b>Favorilerde</b>
       });
+      this.props.handleFav(this.item_id);
     }
   }
 
@@ -155,12 +182,41 @@ class MenuLayout extends React.Component {
     console.log("ITEM-LIST: " + JSON.stringify(this.item_list))
 
     console.log(this.sections);
+
+    this.handleFav = this.handleFav.bind(this);
+    this.handleUnfav = this.handleUnfav.bind(this);
+
+    this.state = { order_changed: false }
+
+    // keeps favorite item ids
+    this.favorite_items = []
+  }
+
+  handleFav(item_id) {
+    this.favorite_items.unshift(item_id);
+
+    // This is only to trigger render
+    let order_change = !this.state.order;
+    this.setState({ order_changed: order_change })
+  }
+
+  handleUnfav(unfav_item_id) {
+    let favoriteItemsNew = [];
+    this.favorite_items.forEach((item_id) => {
+      if (item_id !== unfav_item_id) {
+        favoriteItemsNew.unshift(item_id);
+      }
+    })
+
+    this.favorite_items = favoriteItemsNew;
+    // This is only to trigger render
+    let order_change = !this.state.order;
+    this.setState({ order_changed: order_change })
   }
 
   render() {
-    console.log("RENDERING AGAIN?? keyword: " + this.props.search_keyword)
+    //console.log("RENDERING AGAIN?? keyword: " + this.props.search_keyword)
 
-    
     this.searchKeyword = this.props.search_keyword;
 
     // For each section
@@ -191,17 +247,29 @@ class MenuLayout extends React.Component {
             console.log("MenuLayout/Item with Id " + item_id + " found! " + item.item.name.toLowerCase());
             console.log("MenuLayout/SearchKeyword: " + this.searchKeyword);
             if (item.item.name.toLowerCase().startsWith(this.searchKeyword.toLowerCase())) {
-              item_list_for_section.push(item);
-              console.log("Item " + item.item.name + " starts with " + this.searchKeyword)
+              let favoriteItem = false;
+              this.favorite_items.forEach((fav_item_id) => {
+                if (fav_item_id == item.id) {
+                  favoriteItem = true;
+                  item_list_for_section.unshift(item);
+                  console.log("Favorite Item " + item.item.name + " starts with " + this.searchKeyword);
+                }
+              });
+              if (!favoriteItem) {
+                item_list_for_section.push(item);
+                console.log("Item " + item.item.name + " starts with " + this.searchKeyword)
+              }
             }
           }
         })
       })
-      console.log("Rendering new itemlist for " + section_name+ ": " + item_list_for_section);
+      console.log("Rendering new itemlist for " + section_name + ": " + item_list_for_section);
       // console.log(section_name + " ITEMS: " + JSON.stringify(item_list_for_section))
       return (<SectionView section_name={section_name}
         item_list={item_list_for_section}
         key={section_name}
+        handleFav={this.handleFav}
+        handleUnfav={this.handleUnfav}
       />)
     });
 

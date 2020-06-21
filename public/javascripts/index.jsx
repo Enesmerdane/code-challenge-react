@@ -69,6 +69,9 @@ class MenuItem extends React.Component {
 
     // Taking price
     this.price_arranged = this.details.item.price + " TL";
+
+    // Favorite button
+    
   }
 
   render() {
@@ -78,8 +81,40 @@ class MenuItem extends React.Component {
         <div>{this.details.item.name}</div>
         <div>{this.ingredients_arranged}</div>
         <div>{this.price_arranged}</div>
+        <FavoriteButton/>
       </div>
     );
+  }
+}
+
+class FavoriteButton extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {image_src: "./images/heart.png",
+                  clicked: false,
+                  text: <div>Favorilere ekle</div>};
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(){
+    if(this.state.clicked){
+      this.setState({image_src: "./images/heart.png",
+                     clicked: false,
+                     text: <div>Favorilere ekle</div>});
+    }else{
+      this.setState({image_src: "./images/heart_filled.png",
+                     clicked: true,
+                     text: <b>Favorilerde</b>});
+    }
+  }
+
+  render(){
+    return(
+      <div>
+        <img src={this.state.image_src} onClick={this.handleClick}/>
+        {this.state.text}
+      </div>
+    )
   }
 }
 

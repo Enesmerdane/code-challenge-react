@@ -1,5 +1,5 @@
 // import {SearchBar} from "components/searchBar.jsx";
-
+// import {GridView} from "react-gridview";
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
@@ -57,6 +57,13 @@ class SectionView extends React.Component {
           handleUnfav={this.props.handleUnfav}
         />
       )
+      // return (
+      //   <div class="row">
+      //     <div class="col-md-12">
+
+      //     </div>
+      //   </div>
+      // );
       return (
         <div>
           <h3>{this.section_name}</h3>
@@ -108,13 +115,15 @@ class MenuItem extends React.Component {
 
   render() {
     return (
-      <div style={{borderRadius: 25, 
-                   backgroundColor: "rgba(255, 0, 0, 0.06)",
-                   marginTop: 15,
-                   marginBottom: 15,
-                   paddingTop: 20,
-                   paddingLeft: 15,
-                   paddingBottom: 10}}>
+      <div style={{
+        borderRadius: 25,
+        backgroundColor: "rgba(255, 0, 0, 0.06)",
+        marginTop: 15,
+        marginBottom: 15,
+        paddingTop: 20,
+        paddingLeft: 15,
+        paddingBottom: 10
+      }}>
         <img src={this.img_src} />
         <div>{this.details.item.name}</div>
         <div>{this.ingredients_arranged}</div>

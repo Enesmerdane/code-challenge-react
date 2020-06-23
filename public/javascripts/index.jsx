@@ -83,10 +83,7 @@ class SectionView extends React.Component {
     } else {
       // Then the theme is GRIDVIEW
       const menu_items_view = this.item_list.map((item, index) => {
-        let style = { display: "inline-block" };
-        // if (index % 2 == 1) {
-        //   style = { display: "inline-block" }
-        // }
+        let style = { display: "inline-block", textAlign: "center" };
         return (
           <div style={style}>
             <MenuItem menu_item_details={item}
@@ -145,7 +142,7 @@ class MenuItem extends React.Component {
         WebkitBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
         MozBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
         boxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
-        backgroundColor: "rgba(255, 0, 0, 0.06)",
+        backgroundColor: "rgba(0, 0, 0, 0.01)",
         marginTop: 15,
         marginBottom: 15,
         paddingTop: 20,
@@ -172,7 +169,7 @@ class MenuItem extends React.Component {
           WebkitBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
           MozBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
           boxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
-          backgroundColor: "rgba(255, 0, 0, 0.06)",
+          backgroundColor: "rgba(0, 0, 0, 0.01)",
           marginTop: 15,
           marginBottom: 15,
           marginRight: 15,
@@ -286,7 +283,7 @@ class MenuLayout extends React.Component {
     if (this.state.theme == this.theme.GRID) {
       this.setState({ theme: this.theme.LIST })
       console.log("Theme has been changed to list")
-    } else {
+    } else if(this.state.theme == this.theme.LIST){
       this.setState({ theme: this.theme.GRID })
       console.log("Theme has been changed to grid")
     }

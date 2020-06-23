@@ -16,7 +16,7 @@ class SearchBar extends React.Component {
     return (
       <div>
         Arama Yap
-        <input onChange={this.handleChange} />
+        <input style={{ marginLeft: "5px" }} onChange={this.handleChange} placeHolder="Yemek Adına Göre" />
       </div>
     );
   }
@@ -25,6 +25,8 @@ class SearchBar extends React.Component {
 class SectionView extends React.Component {
   constructor(props) {
     super(props);
+
+    this.theme = { GRID: "grid", LIST: "list" };
 
     this.section_name = props.section_name;
     //console.log("SectionView: section_name" + this.section_name);
@@ -49,12 +51,13 @@ class SectionView extends React.Component {
           {menu_items_view}
         </div>
       );
-    } else {
+    } else if (this.props.theme == this.theme.LIST) {
       const menu_items_view = this.item_list.map((item) =>
         <MenuItem menu_item_details={item}
           key={item.id}
           handleFav={this.props.handleFav}
           handleUnfav={this.props.handleUnfav}
+          theme={this.props.theme}
         />
       )
       // return (
@@ -77,6 +80,29 @@ class SectionView extends React.Component {
           {menu_items_view}
         </div>
       );
+    } else {
+      // Then the theme is GRIDVIEW
+      const menu_items_view = this.item_list.map((item, index) => {
+        let style = { display: "inline-block" };
+        // if (index % 2 == 1) {
+        //   style = { display: "inline-block" }
+        // }
+        return (
+          <div style={style}>
+            <MenuItem menu_item_details={item}
+              key={item.id}
+              handleFav={this.props.handleFav}
+              handleUnfav={this.props.handleUnfav}
+              theme={this.props.theme}
+            />
+          </div>
+        );
+      });
+      return (
+        <div>
+          {menu_items_view}
+        </div>
+      )
     }
   }
 }
@@ -109,31 +135,57 @@ class MenuItem extends React.Component {
     // Taking price
     this.price_arranged = this.details.item.price + " TL";
 
-    // Favorite button
+    this.theme = { GRID: "grid", LIST: "list" };
 
   }
 
   render() {
-    return (
-      <div style={{
-        borderRadius: 25,
+    if (this.props.theme == this.theme.LIST) {
+      const style = {
+        WebkitBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
+        MozBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
+        boxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
         backgroundColor: "rgba(255, 0, 0, 0.06)",
         marginTop: 15,
         marginBottom: 15,
         paddingTop: 20,
-        paddingLeft: 15,
-        paddingBottom: 10
-      }}>
-        <img src={this.img_src} />
-        <div>{this.details.item.name}</div>
-        <div>{this.ingredients_arranged}</div>
-        <div>{this.price_arranged}</div>
-        <FavoriteButton item_id={this.details.id}
-          handleFav={this.props.handleFav}
-          handleUnfav={this.props.handleUnfav}
-        />
-      </div>
-    );
+        paddingLeft: 20,
+        paddingBottom: 20
+      }
+      return (
+        <div style={style}>
+          <img src={this.img_src} />
+          <div style={{ display: "inline-block", marginLeft: "15px" }}>
+            <b>{this.details.item.name}</b>
+            <div>{this.ingredients_arranged}</div>
+            <div>{this.price_arranged}</div>
+            <FavoriteButton item_id={this.details.id}
+              handleFav={this.props.handleFav}
+              handleUnfav={this.props.handleUnfav}
+            />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{
+          WebkitBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
+          MozBoxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
+          boxShadow: "2px 2px 3px 0px rgba(115, 115, 115, 0.56)",
+          backgroundColor: "rgba(255, 0, 0, 0.06)",
+          marginTop: 15,
+          marginBottom: 15,
+          marginRight: 15,
+          paddingTop: 20,
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingBottom: 20
+        }}>
+          <img src={this.img_src} />
+          <p><b>{this.details.item.name}</b></p>
+        </div>
+      );
+    }
   }
 }
 
@@ -195,7 +247,14 @@ class MenuLayout extends React.Component {
     this.handleFav = this.handleFav.bind(this);
     this.handleUnfav = this.handleUnfav.bind(this);
 
-    this.state = { order_changed: false }
+    this.theme = { GRID: "grid", LIST: "list" };
+    this.handleChangeTheme = this.handleChangeTheme.bind(this);
+
+
+    this.state = {
+      order_changed: false,
+      theme: this.theme.LIST
+    }
 
     // keeps favorite item ids
     this.favorite_items = []
@@ -221,6 +280,16 @@ class MenuLayout extends React.Component {
     // This is only to trigger render
     let order_change = !this.state.order;
     this.setState({ order_changed: order_change })
+  }
+
+  handleChangeTheme(e) {
+    if (this.state.theme == this.theme.GRID) {
+      this.setState({ theme: this.theme.LIST })
+      console.log("Theme has been changed to list")
+    } else {
+      this.setState({ theme: this.theme.GRID })
+      console.log("Theme has been changed to grid")
+    }
   }
 
   render() {
@@ -279,14 +348,15 @@ class MenuLayout extends React.Component {
         key={section_name}
         handleFav={this.handleFav}
         handleUnfav={this.handleUnfav}
+        theme={this.state.theme}
       />)
     });
 
     return (
       <div>
-        <div>
-          <button>List</button>
-          <button>Grid</button>
+        <div style={{ textAlign: "center" }}>
+          <button style={{ marginTop: "20px", width: "200px", height: "50px" }} value={this.theme.LIST} onClick={this.handleChangeTheme}>List</button>
+          <button style={{ marginTop: "20px", width: "200px", height: "50px" }} value={this.theme.GRID} onClick={this.handleChangeTheme}>Grid</button>
         </div>
         {sectionViews}
       </div>
@@ -311,22 +381,23 @@ class Restaurant extends React.Component {
   render() {
     const restaurant = window.data.restaurant;
     const searchKeyword = this.state.searchKeyword;
-    return <div>
+    return <div style={{ marginLeft: "300px", marginRight: "300px" }}>
       <h1>Welcome to {restaurant.name}</h1>
-      <h2>searchKeyword: {searchKeyword}</h2>
       <div>
         <h2>
           Please find our menu below
         </h2>
         <h3>
           {restaurant.active_menu.menu_name}
+        </h3>
+        <div>
           <SearchBar handleChange={this.handleSearch} />
           <MenuLayout sections={restaurant.active_menu.menu.sections}
             item_order={restaurant.active_menu.menu.item_order}
             item_list={restaurant.active_menu.menu.items}
             search_keyword={searchKeyword}
           />
-        </h3>
+        </div>
       </div>
     </div>
   }

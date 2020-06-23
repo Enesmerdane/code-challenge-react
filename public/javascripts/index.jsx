@@ -83,7 +83,7 @@ class SectionView extends React.Component {
     } else {
       // Then the theme is GRIDVIEW
       const menu_items_view = this.item_list.map((item, index) => {
-        let style = { display: "inline-block", textAlign: "center" };
+        let style = { display: "inline-block"};
         return (
           <div style={style}>
             <MenuItem menu_item_details={item}
@@ -96,7 +96,7 @@ class SectionView extends React.Component {
         );
       });
       return (
-        <div>
+        <div style={{textAlign: "center" }}>
           {menu_items_view}
         </div>
       )

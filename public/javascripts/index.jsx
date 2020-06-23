@@ -40,14 +40,15 @@ class SectionView extends React.Component {
       const menu_items_view = <b>No Results Found.</b>
       return (
         <div>
-          <h3>{this.section_name}</h3>
-          <hr
-            style={{
-              color: "black",
-              backgroundColor: "black",
-              height: 2
-            }}
-          />
+          <h3 style={{
+            width: "100%",
+            borderBottom: "1px solid #000",
+            lineHeight: "0.1em",
+            margin: "10px 0 20px"
+          }}><span style={{
+            background: "#fff",
+            padding: "0 10px"
+          }}>{this.section_name}</span></h3>
           {menu_items_view}
         </div>
       );
@@ -69,21 +70,22 @@ class SectionView extends React.Component {
       // );
       return (
         <div>
-          <h3>{this.section_name}</h3>
-          <hr
-            style={{
-              color: "black",
-              backgroundColor: "black",
-              height: 2
-            }}
-          />
+          <h3 style={{
+            width: "100%",
+            borderBottom: "1px solid #000",
+            lineHeight: "0.1em",
+            margin: "10px 0 20px"
+          }}><span style={{
+            background: "#fff",
+            padding: "0 10px"
+          }}>{this.section_name}</span></h3>
           {menu_items_view}
         </div>
       );
     } else {
       // Then the theme is GRIDVIEW
       const menu_items_view = this.item_list.map((item, index) => {
-        let style = { display: "inline-block"};
+        let style = { display: "inline-block" };
         return (
           <div style={style}>
             <MenuItem menu_item_details={item}
@@ -96,8 +98,19 @@ class SectionView extends React.Component {
         );
       });
       return (
-        <div style={{textAlign: "center" }}>
-          {menu_items_view}
+        <div>
+          <h3 style={{
+            width: "100%",
+            borderBottom: "1px solid #000",
+            lineHeight: "0.1em",
+            margin: "10px 0 20px"
+          }}><span style={{
+            background: "#fff",
+            padding: "0 10px"
+          }}>{this.section_name}</span></h3>
+          <div style={{ textAlign: "center" }}>
+            {menu_items_view}
+          </div>
         </div>
       )
     }
@@ -283,7 +296,7 @@ class MenuLayout extends React.Component {
     if (this.state.theme == this.theme.GRID) {
       this.setState({ theme: this.theme.LIST })
       console.log("Theme has been changed to list")
-    } else if(this.state.theme == this.theme.LIST){
+    } else if (this.state.theme == this.theme.LIST) {
       this.setState({ theme: this.theme.GRID })
       console.log("Theme has been changed to grid")
     }
